@@ -105,7 +105,6 @@ module.exports = {
         requestedBy: interaction.user,
         searchEngine: QueryType.YOUTUBE_PLAYLIST,
       });
-      console.log(result);
       if (result.tracks.length === 0)
         return interaction.reply(`No playlists found with ${url}`);
 
@@ -116,7 +115,7 @@ module.exports = {
         .setDescription(
           `**${result.tracks.length} songs from [${playlist.title}](${playlist.url})** have been added to the Queue`
         )
-        .setThumbnail(playlist.thumbnail);
+        .setThumbnail(playlist.thumbnail.url);
     } else if (interaction.options.getSubcommand() === "search") {
       // Search for the song using the discord-player
       let url = interaction.options.getString("searchterms");
@@ -126,8 +125,7 @@ module.exports = {
       });
 
       // finish if no tracks were found
-      if (result.tracks.length === 0)
-        return interaction.editReply("No results");
+      if (result.tracks.length === 0) return interaction.reply("No results");
 
       // Add the track to the queue
       const song = result.tracks[0];
